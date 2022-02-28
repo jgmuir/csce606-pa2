@@ -13,3 +13,7 @@
  *= require_tree .
  *= require_self
  */
+ /*Add hilite to CSS - not working?*/
+/*th.hilite {
+  background-color: yellow;
+}*/
