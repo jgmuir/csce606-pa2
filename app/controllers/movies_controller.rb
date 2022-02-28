@@ -7,8 +7,29 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @sort = params[:sort]
-    @movies = Movie.all.order(@sort)
+    # removed these lines, they stopped working when adding ratings
+    #@sort = params[:sort]
+    #@movies = Movie.all.order(@sort)
+    
+    @ratings = Movie.ratings
+
+    if !params.has_key?(:ratings)
+      @ratings_to_show = []
+    else
+      @ratings_to_show = params[:ratings].keys
+      @ratings_to_show_hash = Hash[@ratings_to_show.collect {|key| [key, '1']}]
+    end
+
+    @movies = Movie.with_ratings(@ratings_to_show)
+    
+    # commented out lines because hilite not seemingly functioning, will check on later
+    #@title_header = ''
+    #@release_date_header = ''
+    if params.has_key?(:sort)
+      @movies = @movies.order(params[:sort])
+      #@title_header = 'hilite bg-warning' if params[:sort]=='title'
+      #@release_date_header = 'hilite bg-warning' if params[:sort]=='release_date'
+    end
   end
 
   def new
